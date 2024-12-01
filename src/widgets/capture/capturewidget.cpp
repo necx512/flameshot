@@ -8,7 +8,7 @@
 // Based on KDE's KSnapshot regiongrabber.cpp, revision 796531, Copyright 2007
 // Luca Gugelmann <lucag@student.ethz.ch> released under the GNU LGPL
 // <http://www.gnu.org/licenses/old-licenses/library.txt>
-
+#include <iostream>
 #include "capturewidget.h"
 #include "abstractlogger.h"
 #include "copytool.h"
@@ -257,6 +257,13 @@ CaptureWidget::CaptureWidget(const CaptureRequest& req,
     }
 
     updateCursor();
+}
+
+void CaptureWidget::draw_me_seb(){
+  std::cout << "HEY" << std::endl;
+  QPixmap img = pixmap();
+  //img.fill(Qt::white);
+  img.save(QString("/tmp/a.png"));
 }
 
 CaptureWidget::~CaptureWidget()
@@ -628,7 +635,7 @@ void CaptureWidget::paintEvent(QPaintEvent* paintEvent)
     }
 
     if (m_activeTool && m_mouseIsClicked) {
-        m_activeTool->process(painter, m_context.screenshot);
+        m_activeTool->process(painter, m_context.screenshot,m_context);
     } else if (m_previewEnabled && activeButtonTool() &&
                m_activeButton->tool()->showMousePreview()) {
         m_activeButton->tool()->paintMousePreview(painter, m_context);
@@ -1359,6 +1366,9 @@ void CaptureWidget::handleToolSignal(CaptureTool::Request r)
         case CaptureTool::REQ_DECREASE_TOOL_SIZE:
             setToolSize(m_context.toolSize - 1);
             break;
+	case CaptureTool::REQ_SEB:
+	    draw_me_seb();
+	    break;
         default:
             break;
     }
@@ -1732,7 +1742,7 @@ void CaptureWidget::processPixmapWithTool(QPixmap* pixmap, CaptureTool* tool)
 {
     QPainter painter(pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
-    tool->process(painter, *pixmap);
+    tool->process(painter, *pixmap,m_context);
 }
 
 CaptureTool* CaptureWidget::activeButtonTool() const

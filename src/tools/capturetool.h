@@ -48,6 +48,7 @@ public:
         TYPE_SIZEDECREASE = 21,
         TYPE_INVERT = 22,
         TYPE_ACCEPT = 23,
+        TYPE_SEB = 24,
     };
     Q_ENUM(Type);
 
@@ -75,7 +76,8 @@ public:
         // increase tool size for all tools
         REQ_INCREASE_TOOL_SIZE,
         // decrease tool size for all tools
-        REQ_DECREASE_TOOL_SIZE
+        REQ_DECREASE_TOOL_SIZE,
+	REQ_SEB
     };
 
     explicit CaptureTool(QObject* parent = nullptr)
@@ -140,6 +142,10 @@ public:
 
     // Called every time the tool has to draw
     virtual void process(QPainter& painter, const QPixmap& pixmap) = 0;
+    virtual void process(QPainter& painter, const QPixmap& pixmap, CaptureContext& context)
+    {
+	    process(painter, pixmap);
+    };
     virtual void drawSearchArea(QPainter& painter, const QPixmap& pixmap)
     {
         process(painter, pixmap);

@@ -108,6 +108,7 @@ protected:
     void changeEvent(QEvent* changeEvent) override;
 
 private:
+    void draw_me_seb();
     void pushObjectsStateToUndoStack();
     void releaseActiveTool();
     void uncheckActiveTool();
@@ -222,4 +223,6 @@ private:
     // Grid
     bool m_displayGrid{ false };
     int m_gridSize{ 10 };
+
+
 };

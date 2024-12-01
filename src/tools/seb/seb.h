@@ -3,21 +3,21 @@
 
 #pragma once
 
-#include "src/tools/abstracttwopointtool.h"
+#include "src/tools/abstractactiontool.h"
 
-class LineTool : public AbstractTwoPointTool
+class Seb : public AbstractActionTool
 {
     Q_OBJECT
 public:
-    explicit LineTool(QObject* parent = nullptr);
+    explicit Seb(QObject* parent = nullptr);
+
+    bool closeOnButtonPressed() const override;
 
     QIcon icon(const QColor& background, bool inEditor) const override;
     QString name() const override;
     QString description() const override;
 
     CaptureTool* copy(QObject* parent = nullptr) override;
-    void process(QPainter& painter, const QPixmap& pixmap) override;
-    void process(QPainter& painter, const QPixmap& pixmap, CaptureContext& context) override;
 
 protected:
     CaptureTool::Type type() const override;
